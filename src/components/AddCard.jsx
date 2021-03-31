@@ -8,7 +8,7 @@ const DEFAULT_MESSAGE = {
 class AddCard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { cardsArr: [], cardObj: DEFAULT_MESSAGE };
+        this.state = { cards: [], cardObj: DEFAULT_MESSAGE };
     }
 
     componentDidMount() {
@@ -20,7 +20,7 @@ class AddCard extends React.Component {
         let cardList = () => {
             fetch('http://localhost:7777/notes')
                 .then((responce) => responce.json())
-                .then((cards) => this.setState({cardsArr: cards}));
+                .then((cards) => this.setState({ cards }))
         }
         cardList();
     }
@@ -38,7 +38,7 @@ class AddCard extends React.Component {
         const addToCardList = () => {
             fetch('http://localhost:7777/notes', {
                 method: 'POST',
-                body: JSON.stringify({"message": this.state.cardObj.message}),
+                body: JSON.stringify(this.state.cardObj),
                 headers: {
                     'Content-Type': 'application/json'
                   }
@@ -69,7 +69,7 @@ class AddCard extends React.Component {
                 </form>
                 <div className="card-list">
                     {
-                    this.state.cardsArr.map(item => (
+                    this.state.cards.map(item => (
                         <Card key={item.id} id={item.id} message={item.message} removeMessage={(id) => this.removeMessage(id)}/>
                     ))}
                 </div>
